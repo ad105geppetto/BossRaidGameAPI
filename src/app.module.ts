@@ -9,19 +9,9 @@ import { BossRaidHistory } from "src/users/models/bossRaidHistory.model"
 import { User } from "src/users/models/user.model"
 import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
 
-// const cacheModule = CacheModule.registerAsync({
-//   useFactory: () => ({
-//     store: redisStore,
-//     host: 'localhost',
-//     port: '6379',
-//     ttl: 0,
-//   }),
-// });
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // cacheModule,
     RedisModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (): Promise<RedisModuleOptions> => {
