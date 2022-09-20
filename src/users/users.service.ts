@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import Radis from "ioredis"
 import { InjectModel } from '@nestjs/sequelize';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
@@ -25,12 +25,16 @@ export class UsersService {
   }
 
   async getOne(id: number) {
-    const { totalScore } = await this.userModel.findOne({
+    const user = await this.userModel.findOne({
       where: { id: id },
       attributes: {
         exclude: ["id", "createdAt", "updatedAt", "deletedAt"]
       }
     });
+
+    if (!user) {
+      throw new NotFoundException("유저정보를 찾을 수 없습니다.")
+    }
 
     const bossRaidHistorys = await this.bossRaidHistoryModel.findAll({
       where: { userId: id },
@@ -39,6 +43,6 @@ export class UsersService {
       }
     });
 
-    return { totalScore, bossRaidHistorys }
+    return { totalScore: user.totalScore, bossRaidHistorys }
   }
 }
