@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import Radis from "ioredis"
 import { InjectModel } from '@nestjs/sequelize';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { BossRaidHistory } from './models/bossRaidHistory.model';
 import { User } from './models/user.model';
 
@@ -10,12 +12,15 @@ export class UsersService {
     private userModel: typeof User,
 
     @InjectModel(BossRaidHistory)
-    private bossRaidHistoryModel: typeof BossRaidHistory
+    private bossRaidHistoryModel: typeof BossRaidHistory,
+
+    @InjectRedis()
+    private readonly redis: Radis
   ) { }
 
   async create() {
     const user = await this.userModel.create();
-    console.log(user.id)
+    await this.redis.zadd('user_score', 0, `user:${user.id}`);
     return user.id
   }
 
