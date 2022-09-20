@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import Radis from "ioredis"
 import axios from 'axios';
@@ -34,6 +34,12 @@ export class BossRaidsService {
   }
 
   async getTopRankerList(getRankerListData: GetRankerListDTO) {
+    const user = await this.userModel.findByPk(getRankerListData.userId)
+
+    if (!user) {
+      throw new NotFoundException("유저정보를 찾을 수 없습니다")
+    }
+
     const result = await this.redis.zrevrange('user_score', 0, -1);
     const topRankerInfoList = await Promise.all(result.map(async (user, index) => {
       const ranking = index
@@ -57,10 +63,22 @@ export class BossRaidsService {
   }
 
   async enterRaid(enterData: EnterRaidDTO) {
+    const user = await this.userModel.findByPk(enterData.userId)
+
+    if (!user) {
+      throw new NotFoundException("유저정보를 찾을 수 없습니다")
+    }
+
     if (this.canEnter) {
       const { data } = await axios.get("https://dmpilf5svl7rv.cloudfront.net/assignment/backend/bossRaidData.json")
       const bossRaidsData = data.bossRaids[0]
-      const { score } = bossRaidsData.levels.find((data: any) => data.level === enterData.level)
+      const raidInfo = bossRaidsData.levels.find((data: any) => data.level === enterData.level)
+
+      if (!raidInfo) {
+        throw new NotFoundException("보스레이드 레벨을 찾을 수 없습니다")
+      }
+
+      const score = raidInfo.score
       this.queue.push({ userId: enterData.userId, score: score });
       this.canEnter = false;
       this.isEntered = true;
@@ -73,6 +91,21 @@ export class BossRaidsService {
   }
 
   async endRaid(endData: EndRaidDTO) {
+    const user = await this.userModel.findByPk(endData.userId)
+    const raidHistory = await this.bossRaidHistoryModel.findOne({
+      where: {
+        raidRecordId: endData.raidRecordId
+      }
+    })
+
+    if (!user) {
+      throw new NotFoundException("유저정보를 찾을 수 없습니다")
+    }
+
+    if (!raidHistory) {
+      throw new NotFoundException("보스레이드 정보를 찾을 수 없습니다")
+    }
+
     if (!this.canEnter) {
       const { score } = this.queue.pop();
       this.canEnter = true;
