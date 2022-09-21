@@ -5,8 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { BossRaidsModule } from './boss-raids/boss-raids.module';
-import { BossRaidHistory } from "src/users/models/bossRaidHistory.model"
-import { User } from "src/users/models/user.model"
+import { BossRaidHistory } from './users/models/bossRaidHistory.model';
+import { User } from './users/models/user.model';
 import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
 
 @Module({
@@ -33,7 +33,8 @@ import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
         port: parseInt(process.env.DATABASE_PORT) || 3306,
         models: [User, BossRaidHistory],
         synchronize: true,
-        autoLoadModels: true
+        autoLoadModels: true,
+        logging: false
       }),
     }),
     UsersModule,
