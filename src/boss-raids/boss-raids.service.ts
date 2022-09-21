@@ -64,13 +64,14 @@ export class BossRaidsService {
 
   async enterRaid(enterData: EnterRaidDTO) {
     const user = await this.userModel.findByPk(enterData.userId)
+    let url = process.env.BOSS_URL
 
     if (!user) {
       throw new NotFoundException("유저정보를 찾을 수 없습니다")
     }
 
     if (this.canEnter) {
-      const { data } = await axios.get("https://dmpilf5svl7rv.cloudfront.net/assignment/backend/bossRaidData.json")
+      const { data } = await axios.get(url)
       const bossRaidsData = data.bossRaids[0]
       const raidInfo = bossRaidsData.levels.find((data: any) => data.level === enterData.level)
 
