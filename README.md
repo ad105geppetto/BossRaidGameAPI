@@ -3,6 +3,7 @@
   </br>
   <b id=content>랭킹 시스템이 적용된 PVE 게임 서버 API입니다</b>
   </br></br>
+  <h3>📚 STACKS</h3>
   <img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=Nest&logoColor=white">
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
   <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
@@ -14,13 +15,13 @@
   <img src="https://img.shields.io/badge/.ENV-ECD53F?style=for-the-badge&logo=.ENV&logoColor=white">
 </div>
 
-## 설치
+## 📌 설치
 
 ```bash
 $ npm install
 ```
 
-## 환경 변수 설정
+## 📌 환경 변수 설정
 
 ```bash
 ## .env 안에 들어갈 내용
@@ -33,25 +34,25 @@ BOSS_URL = boss 정보를 알려주는 URL
 REDIS_PORT = redis 포트
 ```
 
-## 앱 실행
+## 📌 앱 실행
 
 ```bash
 # development
 $ npm run start
 ```
 
-## 테스트
+## 📌 테스트
 
 ```bash
 # e2e tests
 $ npm run test:e2e
 ```
 
-## DB 모델링
+## 📌 DB 모델링
 
 ![bossRaid](https://user-images.githubusercontent.com/92367032/191442486-e187dcd9-6334-4034-8547-accec12d0fa2.png)
 
-## API 문서
+## 📌 API 문서
 
 
 ## 📌 Commit Convention
