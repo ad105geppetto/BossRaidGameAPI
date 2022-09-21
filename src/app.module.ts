@@ -18,7 +18,7 @@ import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
         return {
           config: {
             host: 'localhost',
-            port: 6379,
+            port: parseInt(process.env.REDIS_PORT),
           }
         };
       }
