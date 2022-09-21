@@ -54,6 +54,7 @@ $ npm run test:e2e
 
 ## 📌 API 문서
 
+https://iris-feta-eb2.notion.site/f1157cc2ee1545fb8d7cccca45a50ea6?v=2f6e31180561433ea6ae31600c948e1d
 
 ## 📌 Commit Convention
 
